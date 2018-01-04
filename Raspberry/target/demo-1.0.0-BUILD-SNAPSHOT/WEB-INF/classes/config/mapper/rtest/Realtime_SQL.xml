@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="realtime">
+
+
+    <select id="selectGraphListParam1" parameterType="hashmap" resultType="hashmap">
+             select
+              to_char(TIME_STAMP,'HH24:MI:SS') TIME_STAMP,
+              AVG(VALUE_COL_1) VALUE_COL_1
+  
+             from SMSSUSER.TBL_SM_DATA
+             where SITE_ID=#{SITE_ID}
+        <![CDATA[  
+             and TIME_STAMP < To_DATE('20180131'||TO_CHAR(SYSDATE,'HH24MISS'),'YYYYMMDDHH24MISS')
+		]]>
+			group by time_stamp
+			order by time_stamp desc
+			
+	</select>
+	
+	<select id="selectGraphListParam2" parameterType="hashmap" resultType="hashmap">
+             select
+              to_char(TIME_STAMP,'HH24:MI:SS') TIME_STAMP,
+              AVG(VALUE_COL_2) VALUE_COL_2
+  
+             from SMSSUSER.TBL_SM_DATA
+             where SITE_ID=#{SITE_ID}
+        <![CDATA[  
+             and TIME_STAMP < To_DATE('20180131'||TO_CHAR(SYSDATE,'HH24MISS'),'YYYYMMDDHH24MISS')
+		]]>
+			group by time_stamp
+			order by time_stamp desc
+			
+	</select>
+	
+	<select id="selectGraphListParam3" parameterType="hashmap" resultType="hashmap">
+             select
+              to_char(TIME_STAMP,'HH24:MI:SS') TIME_STAMP,
+              AVG(VALUE_COL_3/100) VALUE_COL_3
+  
+             from SMSSUSER.TBL_SM_DATA
+             where SITE_ID=#{SITE_ID}
+        <![CDATA[  
+             and TIME_STAMP < To_DATE('20180131'||TO_CHAR(SYSDATE,'HH24MISS'),'YYYYMMDDHH24MISS')
+		]]>
+			group by time_stamp
+			order by time_stamp desc
+			
+	</select>
+	
+	<select id="selectGraphListParam4" parameterType="hashmap" resultType="hashmap">
+             select
+              to_char(TIME_STAMP,'HH24:MI:SS') TIME_STAMP,
+              AVG(VALUE_COL_4) VALUE_COL_4
+  
+             from SMSSUSER.TBL_SM_DATA
+             where SITE_ID=#{SITE_ID}
+        <![CDATA[  
+             and TIME_STAMP < To_DATE('20180131'||TO_CHAR(SYSDATE,'HH24MISS'),'YYYYMMDDHH24MISS')
+		]]>
+			group by time_stamp
+			order by time_stamp desc
+			
+	</select>
+	
+	<select id="selectGraphListParam5" parameterType="hashmap" resultType="hashmap">
+             select
+              to_char(TIME_STAMP,'HH24:MI:SS') TIME_STAMP,
+              AVG(VALUE_COL_5) VALUE_COL_5
+  
+             from SMSSUSER.TBL_SM_DATA
+             where SITE_ID=#{SITE_ID}
+        <![CDATA[  
+             and TIME_STAMP < To_DATE('20180131'||TO_CHAR(SYSDATE,'HH24MISS'),'YYYYMMDDHH24MISS')
+		]]>
+			group by time_stamp
+			order by time_stamp desc
+			
+	</select>
+	
+	<select id="selectGraphListParam6" parameterType="hashmap" resultType="hashmap">
+             select
+              to_char(TIME_STAMP,'HH24:MI:SS') TIME_STAMP,
+              AVG(VALUE_COL_6) VALUE_COL_6
+  
+             from SMSSUSER.TBL_SM_DATA
+             where SITE_ID=#{SITE_ID}
+        <![CDATA[  
+             and TIME_STAMP < To_DATE('20180131'||TO_CHAR(SYSDATE,'HH24MISS'),'YYYYMMDDHH24MISS')
+		]]>
+			group by time_stamp
+			order by time_stamp desc
+			
+	</select>
+	
+
+	
+	<select id="selectTimeInterval"  resultType="org.shin.demo.rtest.dto.GraphLimit">
+		<![CDATA[
+               SELECT  to_char(sysdate-(1/24/60*2),'HH24:MI:SS') minDate 
+                    ,to_char(sysdate,'HH24:MI:SS') maxDate
+             FROM DUAL
+		]]>
+	</select>
+	
+	
+	<select id="selectLast" parameterType="hashmap" resultType="hashmap">
+     	select 
+   			to_char(DATA.TIME_STAMP,'yyyy-mm-dd HH24:MI:SS') Time,
+    		SITE.DESCRIPTION Site, 
+    		BUILDING.DESCRIPTION Building, 
+    		FLOOR.DESCRIPTION Floor,
+    		SECTOR.DESCRIPTION Sector,
+    		SENSOR.DESCRIPTION Sensor,
+    		DATA.VALUE_COL_1,
+    		DATA.VALUE_COL_2,
+    		DATA.VALUE_COL_3/100 VALUE_COL_3,
+    		DATA.VALUE_COL_4,
+    		DATA.VALUE_COL_5,
+    		DATA.VALUE_COL_6
+		from 
+    		SMSSUSER.TBL_SM_DATA as DATA,
+    		SMSSUSER.TBL_SM_SITE_INFO as SITE,
+    		SMSSUSER.TBL_SM_BUILDING_INFO as BUILDING,
+    		SMSSUSER.TBL_SM_FLOOR_INFO as FLOOR,
+    		SMSSUSER.TBL_SM_SECTOR_INFO as SECTOR, 
+    		SMSSUSER.TBL_SENSOR_INFO as SENSOR
+		where 
+    		DATA.SITE_ID=SITE.SITE_ID and 
+    		DATA.BUILDING_ID=BUILDING.BUILDING_ID and
+    		DATA.FLOOR_ID=FLOOR.FLOOR_ID and
+    		DATA.SECTOR_ID=SECTOR.SECTOR_ID and
+    		DATA.SENSOR_ID=SENSOR.SENSOR_ID and
+    		DATA.SITE_ID = #{SITE_ID}
+    	order by DATA.TIME_STAMP DESC
+    	limit 1,600
+    	
+	</select>
+</mapper>
